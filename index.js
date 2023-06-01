@@ -42,8 +42,9 @@ if(process.env.NODE_ENV==='production'){
 
 app.use(cors({
    credential:true,
-   origin:process.env.LOCAL_HOST
-}));                                
+   origin:origin
+}));
+                                
 app.use(express.json({
     limit:"10mb"
 }
