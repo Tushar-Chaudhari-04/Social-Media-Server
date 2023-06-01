@@ -33,8 +33,8 @@ app.listen(process.env.PORT || 4001,(req,res)=>{
 
 //App using middlewares
 //Cors used for body parser
-let origin=process.env.LOCAL_HOST
 
+//let origin=process.env.LOCAL_HOST
 console.log("process.env.NODE_ENV",process.env.NODE_ENV);
 if(process.env.NODE_ENV==='production'){
     origin=process.env.CROS_ORIGIN
