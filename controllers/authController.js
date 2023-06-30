@@ -6,12 +6,12 @@
 const User=require("../models/User");
 const CryptoJS = require("crypto-js");
 const jwt=require("jsonwebtoken");
-const {success,error}=require("../utils/responseWrapper")
+const {success,error}=require("../utils/responseWrapper");
 
 const signupController=async(req,res)=>{
     try {
         const {firstName,lastName,email,password,bio,avatar}=req.body;    //Destructuring of data
-        console.log("Hi Tango",req.body)
+       // console.log("Hi Tango",req.body)
         if(!firstName || !lastName || !email || !password){
             res.send(error(400,"All feilds are mandatory..."));
         }
@@ -21,7 +21,7 @@ const signupController=async(req,res)=>{
             res.send(error(409,"User already exsits.Please try with new credentials"));
         }
 
-        console.log("newUser123");
+     //   console.log("newUser123");
         const newUser=new User({
             firstName:firstName,
             lastName:lastName,
@@ -34,13 +34,13 @@ const signupController=async(req,res)=>{
             avatar:avatar
 
         });
-        console.log("newUser1",newUser);
+   //     console.log("newUser1",newUser);
         try {
             if(newUser){
-                console.log("newUser2",newUser);
+             //   console.log("newUser2",newUser);
                 const user=await newUser.save();
                 const {password,...data}=user._doc;
-                console.log("data",data);
+              //  console.log("data",data);
                 res.send(success(201,data));
             }
         } catch (error) {
@@ -63,16 +63,16 @@ const signupController=async(req,res)=>{
 const loginController=async(req,res)=>{
     try {
         const {email,password,isAdmin}=req.body;    //Destructuring of data
-        console.log("req.body",req.body)
+       // console.log("req.body",req.body)
         if(!email || !password){
             res.send(error(400,"All feilds are mandatory..."));
         }
-        console.log("1")
+     //   console.log("1")
         try{
-            console.log("2")
+      //      console.log("2")
             const user=await User.findOne({email});
-            console.log("3")
-            console.log("user",user)
+    //        console.log("3")
+    //        console.log("user",user)
             !user &&  res.send(error(401,"User is not Register...")); 
 
             //Crypto JS used for decrypt password in bytes 
@@ -83,7 +83,7 @@ const loginController=async(req,res)=>{
             
             //Bytes to Original password conversion...    
             const originalPassword = bytes.toString(CryptoJS.enc.Utf8); 
-            console.log("pass",originalPassword)
+          //  console.log("pass",originalPassword)
             if(user){
                 if(user.email==email){
                     if(password==originalPassword){
@@ -117,16 +117,16 @@ const loginController=async(req,res)=>{
 //This will secure User as well as enhance user experience...
 const refreshAccessTokenController=async(req,res)=>{
     //const {refreshToken}=req.body;
-    console.log("refresh request",req.body.refreshToken)
+ //   console.log("refresh request",req.body.refreshToken)
     const cookies=req.cookies;
-    console.log("refresh Token",cookies.refreshToken)
+ //   console.log("refresh Token",cookies.refreshToken)
     if(!cookies.refreshToken){
         res.send(error(401,"Refresh Token is required in cookies")); 
     }
 
     const refreshToken=cookies.refreshToken;
     //const refreshToken=req.body.refreshToken;
-    console.log("refresh Token 123",refreshToken)
+ //   console.log("refresh Token 123",refreshToken)
     try {
         const verifyRefreshToken=jwt.verify(
             refreshToken,
@@ -134,12 +134,12 @@ const refreshAccessTokenController=async(req,res)=>{
         );
         
         const accessToken=generateAccessToken(verifyRefreshToken);
-        console.log("new accessToken",accessToken)
+ //       console.log("new accessToken",accessToken)
         if(accessToken){
             res.send(success(200,{...verifyRefreshToken,accessToken})); 
         }
     } catch (error) {
-        console.log("Error in Refresh Token ...")
+ //       console.log("Error in Refresh Token ...")
         res.send(error(401,"Invalid Refresh Token")); 
     } 
 }

@@ -4,13 +4,51 @@ var time = require('time-ago')  // node.js
 
 const mapPostOutput=(post,userId)=>{
     
+    return{
+        _id:post._id,
+        caption:post.caption,
+        image:post.image,
+        owner:{
+            _id:post.owner._id,
+            firstName:post.owner.firstName,
+            lastName:post.owner.lastName,
+            avatar:post.owner.avatar,
+        },
+        likesCount:post?.likes?.length,
+        isLiked:post?.likes?.includes(userId),
+        timeAgo:time.ago(post?.createdAt)?time.ago(post?.createdAt):""
+    }
+}
+
+
+module.exports={
+    mapPostOutput
+}
+
+
+/*
+
     //let dateForamter = 
    //let date1=moment(new Date()).format("MM DD, YYYY HH:MM:SS");   
    //let date2=moment(post?.createdAt).format("MM DD, YYYY HH:MM:SS");   
    // console.log("date",date1,date2); 
     //let postDate=new Date(date2);
 
-    let currentDate=new Date();
+   
+
+/*
+jan 14, 2022 12:21:45
+2023-05-16T06:43:31.404Z
+let dateForamter = moment().format("MM DD, YYYY HH:MM:SS");
+date1=dateForamter.format(new Date())
+date2=dateForamter.format(post?.createdAt)
+timeAgo=((date1.getTime()-date2.getTime())/1000)/3600
+
+//((new Date().getTime- new Date(post?.createdAt).getTime())/1000)/3600
+
+
+
+ let currentDate=new Date();
     let postDate=post?.createdAt;
     console.log("format date ",currentDate,postDate)
     let noOfSeconds=Math.floor(((currentDate.getTime()-postDate.getTime())/1000));
@@ -47,39 +85,7 @@ const mapPostOutput=(post,userId)=>{
         
     }
     console.log("Time ...",noOfSeconds,noOfMinutes,noOfHrs);
-    return{
-        _id:post._id,
-        caption:post.caption,
-        image:post.image,
-        owner:{
-            _id:post.owner._id,
-            firstName:post.owner.firstName,
-            lastName:post.owner.lastName,
-            avatar:post.owner.avatar,
-        },
-        likesCount:post?.likes?.length,
-        isLiked:post?.likes?.includes(userId),
-        timeAgo:time.ago(post?.createdAt)?time.ago(post?.createdAt):""
-    }
-}
-
-/*
-jan 14, 2022 12:21:45
-2023-05-16T06:43:31.404Z
-let dateForamter = moment().format("MM DD, YYYY HH:MM:SS");
-date1=dateForamter.format(new Date())
-date2=dateForamter.format(post?.createdAt)
-timeAgo=((date1.getTime()-date2.getTime())/1000)/3600
-*/
-//((new Date().getTime- new Date(post?.createdAt).getTime())/1000)/3600
-
-
-module.exports={
-    mapPostOutput
-}
-
-
-
+ */
 // const followOrUnfollowUserController = async (req, res) => {
 //     try {
 //         const { userIdToFollow } = req.body;
